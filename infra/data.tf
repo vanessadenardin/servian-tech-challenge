@@ -1,12 +1,12 @@
 data "aws_availability_zones" "azs" {}
 
 data "aws_vpc" "selected" {
-    id = var.aws_vpc
+    id = var.vpc_id
 }
 
 data "aws_subnets" "available" {
   filter {
     name   = "vpc-id"
-    values = [var.aws_vpc]
+    values = [var.vpc_id]
   }
 }

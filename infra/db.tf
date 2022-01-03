@@ -24,7 +24,7 @@ resource "aws_rds_cluster_instance" "cluster_instances" {
 resource "aws_security_group" "db" {
   name        = "${var.prefix}-db"
   description = "Allow connections from server to db on port 5432"
-  vpc_id      = var.aws_vpc
+  vpc_id      = var.vpc_id
 
   ingress = [
     {

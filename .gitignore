@@ -26,3 +26,4 @@ TechChallengeApp
 # infra exceptions
 .terraform*
 terraform.tfstate*
+terraform.plan

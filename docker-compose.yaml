@@ -1,0 +1,16 @@
+version: '3.1'
+
+services:
+
+  terraform:
+    image: hashicorp/terraform:1.1.2
+    volumes:
+      - $PWD/infra:/infra
+      - $HOME/.aws:/root/.aws
+    working_dir: /infra
+    environment:
+      - TF_VAR_vpc_id
+      - TF_VAR_production
+      - TF_VAR_postgresql_password
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
