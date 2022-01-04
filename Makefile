@@ -9,3 +9,9 @@ apply:
 
 destroy:
 	docker-compose run terraform destroy
+
+output:
+	docker-compose run terraform output
+
+update_db:
+	cd infra && ./ecs_task_run.sh

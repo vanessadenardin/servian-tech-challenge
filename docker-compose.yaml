@@ -12,5 +12,7 @@ services:
       - TF_VAR_vpc_id
       - TF_VAR_production
       - TF_VAR_postgresql_password
+      - TF_VAR_domain_name
+      - TF_VAR_certificate_arn
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY

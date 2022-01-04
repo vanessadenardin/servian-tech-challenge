@@ -3,7 +3,7 @@ resource "aws_ecs_cluster" "app" {
 }
 
 resource "aws_ecs_task_definition" "app" {
-  family                   = "service"
+  family                   = var.prefix
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = 256
@@ -92,7 +92,7 @@ resource "aws_lb_target_group" "app" {
   }
 }
 
-resource "aws_lb_listener" "app" {
+resource "aws_lb_listener" "app_80" {
   load_balancer_arn = aws_lb.app.arn
   port              = 80
   protocol          = "HTTP"
@@ -103,9 +103,23 @@ resource "aws_lb_listener" "app" {
   }
 }
 
+resource "aws_lb_listener" "app_443" {
+  count             = var.certificate_arn == "" ? 0 : 1
+  load_balancer_arn = aws_lb.app.arn
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = var.certificate_arn
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.app.arn
+  }
+}
+
 resource "aws_security_group" "lb_sg" {
   name        = "${var.prefix}-lb-sg"
-  description = "Allow connections from internet to port 80"
+  description = "Allow connections from internet"
   vpc_id      = var.vpc_id
 
   ingress = [
@@ -113,6 +127,17 @@ resource "aws_security_group" "lb_sg" {
       description      = "port 80 from internet"
       from_port        = 80
       to_port          = 80
+      protocol         = "tcp"
+      cidr_blocks      = ["0.0.0.0/0"]
+      security_groups  = []
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      self             = false
+    },
+    {
+      description      = "port 443 from internet"
+      from_port        = 443
+      to_port          = 443
       protocol         = "tcp"
       cidr_blocks      = ["0.0.0.0/0"]
       security_groups  = []
@@ -178,7 +203,17 @@ resource "aws_security_group" "app" {
     Name = "${var.prefix}-server"
   }
 }
+
 resource "aws_cloudwatch_log_group" "default" {
   name              = "/ecs/${var.prefix}"
   retention_in_days = 7
+}
+
+resource "aws_route53_record" "app" {
+  count   = var.domain_name == "" ? 0 : 1
+  zone_id = data.aws_route53_zone.selected[0].zone_id
+  name    = var.prefix
+  type    = "CNAME"
+  ttl     = "300"
+  records = [aws_lb.app.dns_name]
 }
