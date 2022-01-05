@@ -12,18 +12,18 @@ resource "aws_ecs_task_definition" "app" {
 
   container_definitions = jsonencode([
     {
-      name         = "app"
-      image        = var.container_image
-      essential    = true
-      cpu          = 128
-      memory       = 256
-      command      = ["serve"]
+      name      = "app"
+      image     = var.container_image
+      essential = true
+      cpu       = 128
+      memory    = 256
+      command   = ["serve"]
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-            awslogs-region        = "ap-southeast-2"
-            awslogs-group         = aws_cloudwatch_log_group.default.name
-            awslogs-stream-prefix = "app"
+          awslogs-region        = "ap-southeast-2"
+          awslogs-group         = aws_cloudwatch_log_group.default.name
+          awslogs-stream-prefix = "app"
         }
       }
       portMappings = [
@@ -34,15 +34,15 @@ resource "aws_ecs_task_definition" "app" {
       ]
       environment = [
         {
-          name = "VTT_DBHOST"
+          name  = "VTT_DBHOST"
           value = aws_rds_cluster.postgres.endpoint
         },
         {
-          name = "VTT_DBPASSWORD"
+          name  = "VTT_DBPASSWORD"
           value = var.postgresql_password
         },
         {
-          name = "VTT_LISTENHOST"
+          name  = "VTT_LISTENHOST"
           value = "0.0.0.0"
         }
       ]
@@ -81,11 +81,11 @@ resource "aws_lb" "app" {
 }
 
 resource "aws_lb_target_group" "app" {
-  name     = "${var.prefix}-tg"
-  port     = 3000
-  protocol = "HTTP"
+  name        = "${var.prefix}-tg"
+  port        = 3000
+  protocol    = "HTTP"
   target_type = "ip"
-  vpc_id   = var.vpc_id 
+  vpc_id      = var.vpc_id
 
   health_check {
     path = "/healthcheck"

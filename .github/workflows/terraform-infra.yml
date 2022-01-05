@@ -1,0 +1,37 @@
+name: "Infrastructure Terraform Plan"
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  plan:
+    name: "Terraform Plan"
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform Init
+        id: init
+        run: make init
+
+      - name: Terraform Plan
+        id: plan
+        env:
+          TF_VAR_vpc_id: ${{ secrets.VPC_ID }}
+          TF_VAR_postgresql_password: ${{ secrets.POSTGRESQL_PASSWORD }}
+          TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
+          TF_VAR_certificate_arn: ${{ secrets.CERTIFICATE_ARN }}
+          TF_VAR_production: false
+        run: make plan
+
+      - name: Terraform Apply
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: make apply
