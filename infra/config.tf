@@ -6,8 +6,10 @@ terraform {
     }
   }
 
-  backend "local" {
-    path = "terraform.tfstate"
+  backend "s3" {
+    bucket = "vanessa-servian-terraform-state"
+    key    = "terraform.tfstate"
+    region = "ap-southeast-2"
   }
 }
 
