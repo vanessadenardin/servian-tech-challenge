@@ -33,5 +33,5 @@ jobs:
         run: make plan
 
       - name: Terraform Apply
-        # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: make apply
