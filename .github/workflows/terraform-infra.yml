@@ -1,5 +1,8 @@
 name: "Infrastructure Terraform Plan"
 on:
+  push:
+    branches:
+      - master
   pull_request:
     branches:
       - master
@@ -26,9 +29,8 @@ jobs:
           TF_VAR_domain_name: ${{ secrets.DOMAIN_NAME }}
           TF_VAR_certificate_arn: ${{ secrets.CERTIFICATE_ARN }}
           TF_VAR_production: false
-
         run: make plan
 
       - name: Terraform Apply
         # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve
+        run: make apply
