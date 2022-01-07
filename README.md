@@ -41,7 +41,7 @@ TABLE OF CONTENTS:
 
 6. [Challenges](#6-challenges)
 
-7. [Furure recommendations](#7-future-recommendations)
+7. [Future recommendations](#7-future-recommendations)
 
 ---
 
