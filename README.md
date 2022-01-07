@@ -31,7 +31,7 @@ TABLE OF CONTENTS:
 4. [How to deploy](#4-how-to-deploy)
 
     - [Dependencies](#dependencies)
-    - [AWS account connection](#aws-account-connection)
+    - [AWS account authentication](#aws-account-authentication)
     - [Manually create an S3 bucket in your AWS account](#manually-create-an-s3-bucket-in-your-aws-account)
     - [Configure Terraform backend and variables](#configure-terraform-backend-and-variables)
     - [Run Terraform](#run-terraform)
@@ -130,8 +130,8 @@ Infrastructure as a code tool is used to manage cloud services and due to its de
 - [Terraform 1.1.2](https://www.terraform.io/)
 - [AWS CLI](https://aws.amazon.com/cli/)
 
-### - AWS account connection
-<!-- ## make sure you are connected to an AWS account -->
+### - AWS account authentication
+
 To run below commands, you will need to make sure to be authenticated to an AWS account. That can be done either exporting an AWS IAM User key/secret or by using roles if you have that setup.
 
 [Configure AWS cli credentials](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html#cli-configure-files-where)
@@ -179,6 +179,10 @@ With all variables configured, you can run the following Terraform commands:
     This will show you which AWS resources will be deployed and save the result in a file called `terraform.plan`.
 - `make apply`
     This will apply the `terraform.plan` file (it won't ask for approval!!) created in the previous step to deploy resources to your AWS account and create the `terraform.tfstate` file in your previously manually created S3 bucket.
+
+    After the creation, it will return some outputs with the information of the resources created in the cloud. Make sure use `alb_dns_name` in the browser to check the application or if you have dns configured use `app_dns_name`.
+
+    You can use `https://` if you have provided an ACM Certificate.
 
 ### - Run update on database
 
