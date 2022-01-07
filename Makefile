@@ -13,5 +13,8 @@ destroy:
 output:
 	docker-compose run terraform output
 
+refresh:
+	docker-compose run terraform apply -refresh-only
+
 update_db:
 	cd infra && ./ecs_task_run.sh

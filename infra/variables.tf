@@ -19,6 +19,7 @@ variable "postgresql_password" {
 
 variable "production" {
   description = "Is the stack a production deployment?"
+  default     = false
 }
 
 variable "postgresql_instance_class" {
