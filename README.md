@@ -3,7 +3,6 @@
 - [LinkedIn](https://www.linkedin.com/in/vanessadenardin/)
 - [Application live version](https://servian-tech-challenge.vanessadenardin.com/)
 
-
 ---
 
 TABLE OF CONTENTS:
@@ -62,47 +61,47 @@ This project was made as a requirement during the Servian's Graduate Program app
 
 ## 3. About technology choices
 
-### - AWS
+### AWS
 
 AWS was chosen as the cloud provider for this project as it's one of the largest cloud provider on the market, it's easier to find information, and I have used before to other projects. Even though I have a Azure certification, I still have more confidence with AWS products and services.
 
-### - Amazon Elastic Container Service (ECS)
+### Amazon Elastic Container Service (ECS)
 
 ECS was used for manage containers on a cluster running tasks in a service. Fargate was used to remove the need of EC2 intances as it's a serverless compute engine.
 
-### - Amazon Elastic Load Balancing (ALB)
+### Amazon Elastic Load Balancing (ALB)
 
 ALB was used to cover application high availability and auto-scaling. The incomming traffic is distributed in the target group to route requests from the listeners in port 80 HTTP and in port 443 HTTPS with the TLS protocol using certificate.
 
-### - Amazon Relational Database Service (RDS)
+### Amazon Relational Database Service (RDS)
 
 Aurora PostgreSQL was used to migrate the database.
 
-### - Amazon Certificate Manager (ACM)
+### Amazon Certificate Manager (ACM)
 
 To increase security, an SSL/TLS certificate was acquired to be able to encrypt network communications on the application website.
 
-### - Amazon Route 53 
+### Amazon Route 53
 
 To route end users to the application website creating a CNAME for the public ALB DNS. This is an optional resource.
 
-### - Amazon Simple Storage Service (S3)
+### Amazon Simple Storage Service (S3)
 
 Just a single bucket to store the Terraform state file.
 
-### - AWS Identity and Access Management (IAM)
+### AWS Identity and Access Management (IAM)
 
 To access control across services and resources of AWS. An User was created to give local and GitHub Action access to the AWS account and also a Role to give the ECS Task access to write logs to CloudWatch.
 
-### - Amazon Security Groups
+### Amazon Security Groups
 
 To control inbound and outbound traffic, 3 security groups are added, on the server with inbound 3000 from the load balancer and outbound to everywhere, on the database with inbound 5432 from server, with no outbound, and on the load balancer with inbound from 80 and 443 for all and outbound 3000 for all for healthchecks.
 
-### - Amazon CloudWatch
+### Amazon CloudWatch
 
 Because it is integrated with ECS, it was used to monitor and collect data in the form of logs to troubleshoot and keep the application running.
 
-### - GitHub and GitHub Actions
+### GitHub and GitHub Actions
 
 Source code management and to automate the application workflow. It was configured in this case to run everytime a GitHub event like pull request (plan) and push/merge (apply).
 
@@ -110,11 +109,11 @@ Source code management and to automate the application workflow. It was configur
 
 [GitHub Actions Apply](https://github.com/vanessadenardin/servian-tech-challenge/runs/4710317126?check_suite_focus=true)
 
-### - 3Musketeers
+### 3Musketeers
 
 It makes reference to the use of the 3 technologies, Docker, Make and Docker Compose, used to test, build, run and deploy the application. 3Musketeers mainly helps with consistency across environments, running the same commands no matter if you are running the deployment locally or from a pipeline.
 
-### - Terraform
+### Terraform
 
 Infrastructure as a code tool is used to manage cloud services and due to its declarative syntax, it is easier to track changes through source code. In this case, it was used to create, manage and destroy AWS resources.
 
@@ -122,7 +121,7 @@ Infrastructure as a code tool is used to manage cloud services and due to its de
 
 ## 4. How to deploy
 
-### - Dependencies
+### Dependencies
 
 - [Docker](https://www.docker.com/)
 - [Docker-Compose](https://docs.docker.com/compose/)
@@ -130,19 +129,19 @@ Infrastructure as a code tool is used to manage cloud services and due to its de
 - [Terraform 1.1.2](https://www.terraform.io/)
 - [AWS CLI](https://aws.amazon.com/cli/)
 
-### - AWS account authentication
+### AWS account authentication
 
 To run below commands, you will need to make sure to be authenticated to an AWS account. That can be done either exporting an AWS IAM User key/secret or by using roles if you have that setup.
 
 [Configure AWS cli credentials](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html#cli-configure-files-where)
 
-### - Manually create an S3 bucket in your AWS account
+### Manually create an S3 bucket in your AWS account
 
 No extra configuration is needed, just make sure your AWS credentials have access to the S3 bucket.
 
 [Create a S3 Bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html)
 
-### - Configure Terraform backend and variables
+### Configure Terraform backend and variables
 
 Before running the Terraform commands, you will need to make sure to configure your backend to point to your own S3 Bucket and have all following parameters configured as environment variables.
 
@@ -169,7 +168,7 @@ export TF_VAR_certificate_arn=<value>
 export TF_VAR_production=<value>
 ```
 
-### - Run Terraform
+### Run Terraform
 
 With all variables configured, you can run the following Terraform commands:
 
@@ -184,7 +183,7 @@ With all variables configured, you can run the following Terraform commands:
 
     You can use `https://` if you have provided an ACM Certificate.
 
-### - Run update on database
+### Run update on database
 
 Run `make update_db`
 
