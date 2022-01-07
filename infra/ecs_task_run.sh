@@ -7,7 +7,7 @@ terraform init
 SUBNET=$(terraform output standalone_task_subnet)
 SG=$(terraform output standalone_task_sg)
 CLUSTER_NAME=$(terraform output ecs_cluster_name | sed 's/"//g')
-TASK_NAME=$(terraform output prefix)
+TASK_NAME=$(terraform output prefix | sed 's/"//g')
 PUBLIC_IP="ENABLED"
 
 aws ecs run-task \
